@@ -1,1 +1,12 @@
+main {
+  min-height: 80vh;
+}
+a {
+  text-decoration: none;
+  color: black;
+}
 
+h1 {
+  padding: 1rem;
+  font-size: 2rem;
+}
