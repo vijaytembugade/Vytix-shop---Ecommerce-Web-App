@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { logout } from "../actions/userAction";
 
-const Header = () => {
+const Header = ({history}) => {
   const { userInfo } = useSelector((state) => state.userLogin);
 
   const dispatch = useDispatch();
@@ -53,10 +53,10 @@ const Header = () => {
                   <LinkContainer to='/admin/userList'>
                     <NavDropdown.Item>Users</NavDropdown.Item>
                   </LinkContainer>
-                  <LinkContainer to='admin/productlist'>
+                  <LinkContainer to='/admin/productlist'>
                     <NavDropdown.Item>Products</NavDropdown.Item>
                   </LinkContainer>
-                  <LinkContainer to='admin/orderlist'>
+                  <LinkContainer to='/admin/orderlist'>
                     <NavDropdown.Item>Orders</NavDropdown.Item>
                   </LinkContainer>
                 </NavDropdown>
