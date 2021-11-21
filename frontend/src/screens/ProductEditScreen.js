@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { Form, Button } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
-import { listProductDetails, } from '../actions/productActions'
+import { listProductDetails, updateProduct } from '../actions/productActions'
 import FormContainer from "../components/FormContainer";
 import Message from "../components/Message";
 import Loader from "../components/Loader";
@@ -16,13 +16,16 @@ const ProductEditScreen = ({ match, history }) => {
     const [image, setImage] = useState("");
     const [brand, setBrand] = useState("");
     const [category, setCategory] = useState("");
-    const [countInStocks, setCountInStocks] = useState(0);
+    const [countInStock, setCountInStock] = useState(0);
     const [description, setDescription] = useState("");
 
     const dispatch = useDispatch();
 
     const productDetails = useSelector((state) => state.productDetails);
     const { loading, error, product } = productDetails;
+
+    const productUpdate = useSelector((state) => state.productUpdate);
+    const { loading: loadingUpdate, error: errorUpdate, success: successUpdate } = productUpdate;
 
     useEffect(() => {
 
@@ -34,16 +37,19 @@ const ProductEditScreen = ({ match, history }) => {
             setImage(product.image)
             setBrand(product.brand)
             setCategory(product.category)
-            setCountInStocks(product.countInStocks)
+            setCountInStock(product.countInStock)
             setDescription(product.description)
         }
 
-    }, [dispatch, history, productId, product]);
+    }, [dispatch, history, productId, product, successUpdate]);
 
     const submitHandler = (e) => {
         e.preventDefault();
-        //UPDATE PRODUCT
-
+        dispatch(updateProduct({
+            _id: productId,
+            name, price, image, brand, category, countInStock, description
+        }))
+        history.push('/admin/productList')
     };
 
     return (
@@ -53,8 +59,8 @@ const ProductEditScreen = ({ match, history }) => {
             </Link>
             <FormContainer>
                 <h1>Edit Product</h1>
-                {/* {loadingUpdate && <Loader/>}
-                {errorUpdate && <Message variant={"danger"}>{error}</Message>} */}
+                { loadingUpdate && <Loader /> }
+                { errorUpdate && <Message variant={ "danger" }>{ error }</Message> }
                 { loading ? <Loader /> : error ? <Message variant="danger">{ error }</Message> : (
                     <Form onSubmit={ submitHandler }>
                         <Form.Group controlId="Name">
@@ -88,7 +94,7 @@ const ProductEditScreen = ({ match, history }) => {
                                 type="text"
                                 label="Image"
                                 value={ image }
-                                onChange={ (e) => setImage(e.target.checked) }
+                                onChange={ (e) => setImage(e.target.value) }
                             ></Form.Control>
                         </Form.Group>
 
@@ -100,7 +106,7 @@ const ProductEditScreen = ({ match, history }) => {
                                 type="text"
                                 label="brand"
                                 value={ brand }
-                                onChange={ (e) => setBrand(e.target.checked) }
+                                onChange={ (e) => setBrand(e.target.value) }
                             ></Form.Control>
                         </Form.Group>
 
@@ -116,19 +122,19 @@ const ProductEditScreen = ({ match, history }) => {
                             ></Form.Control>
                         </Form.Group>
 
-                        <Form.Group controlId="countinstocks">
+                        <Form.Group controlId="countinstock,">
                             <Form.Label>
                                 Count in Stocks
                             </Form.Label>
                             <Form.Control
                                 type="number"
                                 placeholder="Coun in Stocks"
-                                value={ countInStocks }
-                                onChange={ (e) => setCountInStocks(e.target.value) }
+                                value={ countInStock }
+                                onChange={ (e) => setCountInStock(e.target.value) }
                             ></Form.Control>
                         </Form.Group>
 
-                        
+
 
                         <Form.Group controlId="description">
                             <Form.Label>

@@ -15,8 +15,6 @@ const ProductListScreen = ({ history, match }) => {
 	const { loading: loadingCreate, error: errorCreate, sucess: successCreate, product: createdProduct } = useSelector(state => state.productCreate)
 	const { userInfo } = useSelector(state => state.userLogin)
 
-	
-	
 	useEffect(() => {
 		dispatch({ type: PRODUCT_CREATE_RESET })
 		
