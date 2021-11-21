@@ -128,9 +128,9 @@ const ProfileScreen = ({ location, history }) => {
           <Loader />
         ) : errorOrder ? (
           <Message variant='danger'>{ errorOrder }</Message>
-        ) : (
-          <Table striped bordered hover responsive className='table-sm'>
-            <thead>
+        ) : 
+            <Table striped bordered hover responsive className='table-sm'>
+          <thead>
               <tr>
                 <th>ID</th>
                 <th>DATE</th>
@@ -168,10 +168,11 @@ const ProfileScreen = ({ location, history }) => {
                     </LinkContainer>
                   </td>
                 </tr>
-              )) }
+              ))}
             </tbody>
           </Table>
-        ) }
+          
+        }
       </Col>
     </Row>
   );
