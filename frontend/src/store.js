@@ -17,7 +17,7 @@ import {
   userListReducer,
   userDeleteReducer,userUpdateReducer
 } from "./reducers/userReducer";
-import { orderCreateReducer, orderDatailsReducer, orderDPayReducer, orderListMyReducer } from './reducers/orderReducers'
+import { orderCreateReducer, orderDatailsReducer, orderPayReducer, orderListMyReducer, orderListReducer, orderDeliverReducer } from './reducers/orderReducers'
 
 //create reducer and import them from reducer
 const reducer = combineReducers({
@@ -30,7 +30,7 @@ const reducer = combineReducers({
   userUpdateProfile: userUpdateProfileReducer,
   orderCreate: orderCreateReducer,
   orderDetails: orderDatailsReducer,
-  orderPay: orderDPayReducer,
+  orderPay: orderPayReducer,
   orderListMy: orderListMyReducer,
   userList: userListReducer,
   userDelete: userDeleteReducer,
@@ -38,7 +38,8 @@ const reducer = combineReducers({
   productDelete: ProductDeleteReducer,
   productCreate : ProductCreateReducer,
   productUpdate :ProductUpdateReducer, 
-
+  orderList : orderListReducer,
+  orderDeliver: orderDeliverReducer
 });
 
 //initialstate

@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { Form, Button } from "react-bootstrap";
+import { Form, Button , Image} from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { listProductDetails, updateProduct } from '../actions/productActions'
 import FormContainer from "../components/FormContainer";
 import Message from "../components/Message";
 import Loader from "../components/Loader";
+import axios from 'axios'
 
 
 const ProductEditScreen = ({ match, history }) => {
@@ -18,6 +19,7 @@ const ProductEditScreen = ({ match, history }) => {
     const [category, setCategory] = useState("");
     const [countInStock, setCountInStock] = useState(0);
     const [description, setDescription] = useState("");
+    const [uploading, setUploading] = useState(false);
 
     const dispatch = useDispatch();
 
@@ -51,6 +53,34 @@ const ProductEditScreen = ({ match, history }) => {
         }))
         history.push('/admin/productList')
     };
+
+    const imageLoaderStyle = {
+        width: "50px",
+        height: "50px"
+    }
+
+    const uploadFileHandler =async  (e) =>{
+        const file = e.target.files[0];
+        const formData = new FormData()
+        formData.append('image', file)
+        setUploading(true);
+
+        try{
+            const config = {
+                headers : {
+                    "Content-Type" : "multipart/form-data"
+                } ,
+            }
+
+            const { data } = await axios.post('/api/upload', formData, config)
+
+            setImage(data)
+            setUploading(false)
+        }catch(err){    
+            console.log(err)
+            setUploading(false)
+        }
+    }
 
     return (
         <>
@@ -96,6 +126,9 @@ const ProductEditScreen = ({ match, history }) => {
                                 value={ image }
                                 onChange={ (e) => setImage(e.target.value) }
                             ></Form.Control>
+                            <Form.File id="image-file" label="Choose File" onChange={uploadFileHandler}>
+                                {uploading && <Image style={ imageLoaderStyle } src="https://upload.wikimedia.org/wikipedia/commons/2/29/Loader.gif" /> }
+                            </Form.File>
                         </Form.Group>
 
                         <Form.Group controlId="brand">

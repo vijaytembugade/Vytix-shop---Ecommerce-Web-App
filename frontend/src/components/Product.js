@@ -7,12 +7,12 @@ function Product({ product }) {
   return (
     <Card bg="light" border="warning" className="my-3 p-3 rounded">
       <Link to={`/product/${product._id}`}>
-        <Card.Img src={product.image} variant="top"></Card.Img>
+        <Card.Img style={{height: "200px"}} src={product.image} variant="top"></Card.Img>
       </Link>
 
       <Card.Body>
         <Link to={`/product/${product._id}`}>
-          <Card.Title>{product.name}</Card.Title>
+          <Card.Title> <h4 maxLength={10}>{product.name}</h4></Card.Title>
         </Link>
         <Card.Text>
           <Rating

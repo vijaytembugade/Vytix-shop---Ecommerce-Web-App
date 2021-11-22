@@ -1,17 +1,18 @@
 import React, { useState, useEffect } from "react";
-import { Button, Row, Col, ListGroup, Image, Card } from "react-bootstrap";
+import { Button, Row, Col, ListGroup, Image, Card, ListGroupItem } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import Message from '../components/Message'
 import Loader from "../components/Loader";
 import { Link } from "react-router-dom";
-import { createOrder, getOrderDetails, payOrder } from "../actions/orderActions";
+import { createOrder, getOrderDetails, payOrder, deliverOrder } from "../actions/orderActions";
 import axios from 'axios';
 import { PayPalButton } from 'react-paypal-button-v2';
-import { ORDER_PAY_RESET } from '../constants/orderConstants'
+import { ORDER_PAY_RESET, ORDER_DELIVER_RESET } from '../constants/orderConstants'
 
 const OrderScreen = ({ history, match }) => {
     const orderId = match.params.id
     const [sdkReady, setSdkReady] = useState(false)
+    const [demoCreds, setDemoCreds] = useState(false)
 
 
     const dispatch = useDispatch();
@@ -19,8 +20,17 @@ const OrderScreen = ({ history, match }) => {
     const orderDetails = useSelector(state => state.orderDetails)
     const { order, loading, error } = orderDetails;
 
+    const userLogin = useSelector(state => state.userLogin)
+    const { userInfo } = userLogin;
+
     const orderPay = useSelector(state => state.orderPay)
     const { loading: loadingPay, success: successPay } = orderPay;
+
+    const orderDeliver = useSelector(state => state.orderDeliver)
+    const { loading: loadingDeliver, success: successDeliver } = orderDeliver;
+
+
+
     const addDecimals = (num) => {
         return (Math.round(num * 100) / 100).toFixed()
     }
@@ -32,6 +42,10 @@ const OrderScreen = ({ history, match }) => {
 
     useEffect(() => {
 
+        if(!userInfo){
+            history.push('/login')
+        }
+
         const addPayPalScript = async () => {
             const { data: clientId } = await axios.get('/api/config/paypal')
             const script = document.createElement('script')
@@ -39,22 +53,23 @@ const OrderScreen = ({ history, match }) => {
             script.src = `https://www.paypal.com/sdk/js?client-id=${clientId}`
             script.async = true
             script.onload = () => {
-              setSdkReady(true)
+                setSdkReady(true)
             }
             document.body.appendChild(script)
-          }
-      
-          if (!order || successPay) {
+        }
+
+        if (!order || successPay || successDeliver) {
             dispatch({ type: ORDER_PAY_RESET })
+            dispatch({ type: ORDER_DELIVER_RESET })
             dispatch(getOrderDetails(orderId))
-          } else if (!order.isPaid) {
+        } else if (!order.isPaid) {
             if (!window.paypal) {
-              addPayPalScript()
+                addPayPalScript()
             } else {
-              setSdkReady(true)
+                setSdkReady(true)
             }
-          }
-    }, [order, orderId, dispatch, successPay, sdkReady ])
+        }
+    }, [order, orderId, dispatch, successPay, sdkReady, successDeliver])
 
 
 
@@ -62,6 +77,14 @@ const OrderScreen = ({ history, match }) => {
         console.log(paymentResult);
         dispatch(payOrder(orderId, paymentResult));
 
+    }
+
+    const deliverHandler = () => {
+        dispatch(deliverOrder(order))
+    }
+
+    function handleDemoCredentials() {
+        setDemoCreds(!demoCreds)
     }
 
 
@@ -191,13 +214,28 @@ const OrderScreen = ({ history, match }) => {
                         </ListGroup.Item> */}
 
 
-                        <p>Demo Credentials for payment </p>
-                        <p>Email : sb-kzkrr8468107@personal.example.com </p>
-                        <p>Password: B.b8j|4X </p>
+
+
+
+                        { loadingDeliver && <Image style={ { width: "50px", height: "50px" } } src="https://upload.wikimedia.org/wikipedia/commons/2/29/Loader.gif" /> }
+                        {userInfo &&  userInfo.isAdmin && order.isPaid && !order.isDelivered && (
+                            <ListGroupItem>
+                                <Button type="button" className='btn btn-block' onClick={ deliverHandler }>Mark As Delivered</Button>
+                            </ListGroupItem>
+                        ) }
                     </ListGroup>
                 </Card>
+                <Button className='btn btn-light mt-3 mb-3' onClick={ handleDemoCredentials }>{
+                    !demoCreds ? "Show  Demo Credential" : "Hide Demo credentials"
+                }</Button>
+                { demoCreds && <div>
+                    <p>Demo Credentials for payment </p>
+                    <p>Email : sb-kzkrr8468107@personal.example.com </p>
+                    <p>Password: B.b8j|4X </p>
+                </div> }
             </Col>
         </Row>
+
     </>)
 }
 
