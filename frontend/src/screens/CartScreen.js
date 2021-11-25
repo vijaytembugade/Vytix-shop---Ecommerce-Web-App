@@ -14,6 +14,7 @@ import {
 } from "react-bootstrap";
 import Message from "../components/Message";
 import { addToCart, removeFromCart } from "../actions/cartActions";
+import Meta from "../components/Meta";
 
 const CartScreen = ({ history }) => {
   const { id } = useParams();
@@ -33,6 +34,7 @@ const CartScreen = ({ history }) => {
   };
   return (
     <Row>
+      <Meta title="Welcome to Vytix | Cart"/>
       <Col md={8}>
         <h1>Shopping Cart</h1>
         {!cartItems.length ? (

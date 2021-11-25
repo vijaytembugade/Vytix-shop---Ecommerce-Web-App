@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import Loader from './Loader'
 import Message from './Message'
 import { listTopProducts } from '../actions/productActions'
+import {Helmet} from 'react-helmet'
 
 const ProductCarousel = () => {
   const dispatch = useDispatch()

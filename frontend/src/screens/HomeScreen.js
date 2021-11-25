@@ -8,6 +8,9 @@ import Loader from "../components/Loader";
 import Message from "../components/Message";
 import PaginateWork from "../components/PaginateWork";
 import ProductCarousel from "../components/ProductCarousel";
+import { Helmet } from 'react-helmet'
+import Meta from "../components/Meta";
+import { Link } from 'react-router-dom';
 
 const HomeScreen = ({ match }) => {
 
@@ -20,7 +23,7 @@ const HomeScreen = ({ match }) => {
   useEffect(() => {
     dispatch(listProduct(keyWord, pageNumber));
   }, [dispatch, pageNumber, keyWord]);
-  
+
   const { loading, error, products, page, pages } = useSelector(
     (state) => state.productList
   );
@@ -28,6 +31,7 @@ const HomeScreen = ({ match }) => {
 
   return (
     <>
+      <Meta />
 
       { loading ? (
         <Loader />
@@ -36,7 +40,11 @@ const HomeScreen = ({ match }) => {
       ) : (
         <>
           <Row>
-            { !keyWord &&<ProductCarousel /> }
+            { !keyWord ? <ProductCarousel /> :
+              <Link style={{width : "50px"}} className="btn btn-dark my-3" to="/">
+                <i class="fas fa-long-arrow-alt-left" />
+              </Link>
+            }
             <h1>Latest Products</h1>
             { products &&
               products.map((product) => (

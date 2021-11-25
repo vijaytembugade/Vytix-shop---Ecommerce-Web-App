@@ -8,6 +8,7 @@ import Message from "../components/Message";
 import Loader from "../components/Loader";
 import { USER_UPDATE_PROFILE_RESET } from "../constants/userConstants";
 import { listMyOrders } from '../actions/orderActions'
+import Meta from "../components/Meta";
 
 const ProfileScreen = ({ location, history }) => {
   const [name, setName] = useState("");
@@ -63,6 +64,7 @@ const ProfileScreen = ({ location, history }) => {
 
   return (
     <Row>
+      <Meta title={`Vitix Profile | ${name}`}/>
       <Col md={ 3 }>
         <h2>User Profile</h2>
         { message && <Message variant="danger">{ message }</Message> }
