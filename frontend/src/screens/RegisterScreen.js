@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { Form, Button, Row, Col } from "react-bootstrap";
+import { Form, Button, Row, Col, Image } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { register } from "../actions/userAction";
 import FormContainer from "../components/FormContainer";
@@ -38,7 +38,9 @@ const RegisterScreen = ({ location, history }) => {
   };
 
   return (
-    <FormContainer>
+    <Row>
+      <Col md={5}>
+      <FormContainer>
       <h1>Sign Up</h1>
       {message && <Message variant="danger">{message}</Message>}
       {error && <Message variant="danger">{error}</Message>}
@@ -105,6 +107,11 @@ const RegisterScreen = ({ location, history }) => {
         </Col>
       </Row>
     </FormContainer>
+      </Col>
+      <Col md={7}>
+      <Image className='mt-3 img-fluid' src="/images/backgroundSignin.png"/>
+      </Col>
+    </Row>
   );
 };
 
