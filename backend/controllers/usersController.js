@@ -20,8 +20,6 @@ export const authUser = asyncHandler(async (req, res) => {
     res.status(401);
     throw new Error("Invalid Credentials");
   }
-
-  res.send({ email, password });
 });
 
 // register a new user  POST api/users public
