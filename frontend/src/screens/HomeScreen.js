@@ -6,16 +6,23 @@ import { listProduct } from "../actions/productActions";
 import Product from "../components/Product";
 import Loader from "../components/Loader";
 import Message from "../components/Message";
+import PaginateWork from "../components/PaginateWork";
 
-const HomeScreen = () => {
+const HomeScreen = ({match}) => {
+
+
+  const keyWord = match.params.keyword
+  const pageNumber = match.params.pageNumber || 1
+
   const dispatch = useDispatch();
   useEffect(() => {
-    dispatch(listProduct());
-  }, [dispatch]);
+    dispatch(listProduct(keyWord, pageNumber));
+  }, [dispatch, pageNumber,keyWord]);
 
-  const { loading, error, products } = useSelector(
+  const { loading, error, products, page, pages } = useSelector(
     (state) => state.productList
   );
+
 
   return (
     <>
@@ -24,6 +31,7 @@ const HomeScreen = () => {
       ) : error ? (
         <Message variant="danger">{error}</Message>
       ) : (
+        <>
         <Row>
           <h1>Latest Products</h1>
           {products &&
@@ -33,6 +41,9 @@ const HomeScreen = () => {
               </Col>
             ))}
         </Row>
+        <PaginateWork  pages={pages} page={page} keyword={keyWord ? keyWord : ''} />
+        
+        </>
       )}
     </>
   );

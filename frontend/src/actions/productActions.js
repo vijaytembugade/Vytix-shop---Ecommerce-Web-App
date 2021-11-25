@@ -21,11 +21,11 @@ import {
 } from "../constants/productConstants";
 import axios from "axios";
 
-export const listProduct = () => async (dispatch) => {
+export const listProduct = (keyword = "", pageNumber="") => async (dispatch) => {
   dispatch({ type: PRODUCT_LIST_REQUEST });
 
   // const { data } = axios.get("api/products");
-  fetch("/api/products")
+  fetch(`/api/products?keyword=${keyword}&pageNumber=${pageNumber}`)
     .then((res) => {
       if (!res.ok) {
         throw Error(res.statusText);

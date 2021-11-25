@@ -7,10 +7,12 @@ import Message from "../components/Message";
 import Loader from "../components/Loader";
 import { listProduct, deleteProduct, createProduct } from '../actions/productActions'
 import { PRODUCT_CREATE_RESET } from '../constants/productConstants'
+import PaginateWork from "../components/PaginateWork";
 
 const ProductListScreen = ({ history, match }) => {
+	const pageNumber = match.params.pageNumber || 1
 	const dispatch = useDispatch()
-	const { loading, error, products } = useSelector(state => state.productList)
+	const { loading, error, products, page,pages } = useSelector(state => state.productList)
 	const { loading: loadingDelete, error: errorDelete, sucess: successDelete } = useSelector(state => state.productDelete)
 	const { loading: loadingCreate, error: errorCreate, sucess: successCreate, product: createdProduct } = useSelector(state => state.productCreate)
 	const { userInfo } = useSelector(state => state.userLogin)
@@ -25,9 +27,9 @@ const ProductListScreen = ({ history, match }) => {
 		if (successCreate) {
 			history.push(`/admin/product/${createdProduct._id}/edit`)
 		} else {
-			dispatch(listProduct())
+			dispatch(listProduct('', pageNumber))
 		}
-	}, [dispatch, history, userInfo,successDelete, successCreate, createdProduct])
+	}, [dispatch, history, userInfo,successDelete, successCreate, createdProduct, pageNumber])
 
 	const deleteHandler = (id) => {
 		if (window.confirm("Are you sure?")) {
@@ -92,6 +94,7 @@ const ProductListScreen = ({ history, match }) => {
 								)) }
 							</tbody>
 						</Table>
+						<PaginateWork pages={pages} page={page} isAdmin={true}/>
 					</>
 				) }
 
