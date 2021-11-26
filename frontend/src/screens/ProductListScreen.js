@@ -10,38 +10,54 @@ import { PRODUCT_CREATE_RESET } from '../constants/productConstants'
 import PaginateWork from "../components/PaginateWork";
 
 const ProductListScreen = ({ history, match }) => {
+	const [showDeleteProductMessage, setDeleteProductMessage ] = useState(false)
 	const pageNumber = match.params.pageNumber || 1
 	const dispatch = useDispatch()
-	const { loading, error, products, page,pages } = useSelector(state => state.productList)
+	const { loading, error, products, page, pages } = useSelector(state => state.productList)
 	const { loading: loadingDelete, error: errorDelete, sucess: successDelete } = useSelector(state => state.productDelete)
 	const { loading: loadingCreate, error: errorCreate, sucess: successCreate, product: createdProduct } = useSelector(state => state.productCreate)
 	const { userInfo } = useSelector(state => state.userLogin)
 
 	useEffect(() => {
 		dispatch({ type: PRODUCT_CREATE_RESET })
-		
+
 		if (!userInfo.isAdmin) {
 			history.push('/login')
 		}
-		
+
 		if (successCreate) {
 			history.push(`/admin/product/${createdProduct._id}/edit`)
 		} else {
 			dispatch(listProduct('', pageNumber))
 		}
-	}, [dispatch, history, userInfo,successDelete, successCreate, createdProduct, pageNumber])
+	}, [dispatch, history, userInfo, successDelete, successCreate, createdProduct, pageNumber])
+
+	console.log()
 
 	const deleteHandler = (id) => {
-		if (window.confirm("Are you sure?")) {
-			dispatch(deleteProduct(id))
+		if (process.env.NODE_ENV === "development") {
+			// if (window.confirm("Are you sure?")) {
+			// 	dispatch(deleteProduct(id))
+			// }
+			setDeleteProductMessage(true)
+			setTimeout(()=>{
+				setDeleteProductMessage(false)
+			}, 3000)
+		}else if(process.env.NODE_ENV === 'production'){
+			setDeleteProductMessage(true)
+			setTimeout(()=>{
+				setDeleteProductMessage(false)
+			}, 3000)
 		}
+
 	}
-	
+
 	const createProductHandler = () => {
 		dispatch(createProduct())
 	}
 	return (
 		<>
+		{showDeleteProductMessage && <Message variant="secondary">You do not have access to delete Products!</Message>}
 			<Row className='align-items-center'>
 				<Col><h1>Products</h1></Col>
 				<Col className="text-right">
@@ -94,7 +110,7 @@ const ProductListScreen = ({ history, match }) => {
 								)) }
 							</tbody>
 						</Table>
-						<PaginateWork pages={pages} page={page} isAdmin={true}/>
+						<PaginateWork pages={ pages } page={ page } isAdmin={ true } />
 					</>
 				) }
 

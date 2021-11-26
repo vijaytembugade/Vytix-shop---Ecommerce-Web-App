@@ -6,47 +6,47 @@ import CheckoutSteps from "../components/CheckoutSteps";
 import { Link } from "react-router-dom";
 import { createOrder } from "../actions/orderActions";
 
-const PlaceOrderScreen = ({history}) => {
+const PlaceOrderScreen = ({ history }) => {
 	const cart = useSelector(state => state.cart)
 	const dispatch = useDispatch();
 	const { shippingAddress } = cart;
 
-	const orderCreate = useSelector(state=>state.orderCreate)
-	const {order , success, error} = orderCreate;
+	const orderCreate = useSelector(state => state.orderCreate)
+	const { order, success, error } = orderCreate;
 	console.log(success)
 
-	useEffect(()=>{
-		
-		if(success && order){
+	useEffect(() => {
+
+		if (success && order) {
 			history.push(`order/${order._id}`)
 		}
 		// eslint-disable-next-line
 	}, [history, success, order])
 
-	
-	const placeorderhandler = ()=>{
-			dispatch(createOrder({
-				orderItems : cart.cartItems,
-				shippingAddress:cart.shippingAddress,
-				paymentMethod: cart.paymentMethod,
-				itemsPrice: cart.itemsPrice,
-				shippingPrice: cart.shippingPrice,
-				taxPrice: cart.taxPrice,
-				totalPrice: cart.totalPrice,
-			}))
-		
+
+	const placeorderhandler = () => {
+		dispatch(createOrder({
+			orderItems: cart.cartItems,
+			shippingAddress: cart.shippingAddress,
+			paymentMethod: cart.paymentMethod,
+			itemsPrice: cart.itemsPrice,
+			shippingPrice: cart.shippingPrice,
+			taxPrice: cart.taxPrice,
+			totalPrice: cart.totalPrice,
+		}))
+
 	}
-	
+
 	//calculate price
 
-	const addDecimals = (num)=>{
-		return (Math.round(num * 100)/100).toFixed()
+	const addDecimals = (num) => {
+		return (Math.round(num * 100) / 100).toFixed()
 	}
-	
-	cart.itemsPrice = addDecimals(cart.cartItems.reduce((acc, item)=> acc+item.price *item.qty, 0))
-	cart.shippingPrice =addDecimals(cart.itemsPrice > 100 ? 0 : 100)
+
+	cart.itemsPrice = addDecimals(cart.cartItems.reduce((acc, item) => acc + item.price * item.qty, 0))
+	cart.shippingPrice = addDecimals(cart.itemsPrice > 100 ? 0 : 100)
 	cart.taxPrice = addDecimals(Number((0.15) * cart.itemsPrice).toFixed(2))
-	cart.totalPrice = addDecimals(Number(cart.itemsPrice)+Number(cart.shippingPrice)+Number(cart.taxPrice))
+	cart.totalPrice = addDecimals(Number(cart.itemsPrice) + Number(cart.shippingPrice) + Number(cart.taxPrice))
 
 
 	return (
@@ -95,7 +95,7 @@ const PlaceOrderScreen = ({history}) => {
 						</ListGroup.Item>
 					</ListGroup>
 				</Col>
-				<Col md={4}>
+				<Col md={ 4 }>
 					<Card>
 						<ListGroup variant="flush">
 							<ListGroup.Item>
@@ -104,49 +104,48 @@ const PlaceOrderScreen = ({history}) => {
 							<ListGroup.Item>
 								<Row>
 									<Col>
-									Items
+										Items
 									</Col>
 									<Col>
-										${cart.itemsPrice}
+										${ cart.itemsPrice }
 									</Col>
 								</Row>
 							</ListGroup.Item>
 							<ListGroup.Item>
 								<Row>
 									<Col>
-									Shipping
+										Shipping
 									</Col>
 									<Col>
-										${cart.shippingPrice}
+										${ cart.shippingPrice }
 									</Col>
 								</Row>
 							</ListGroup.Item>
 							<ListGroup.Item>
 								<Row>
 									<Col>
-									Tax
+										Tax
 									</Col>
 									<Col>
-										${cart.taxPrice}
+										${ cart.taxPrice }
 									</Col>
 								</Row>
 							</ListGroup.Item>
 							<ListGroup.Item>
 								<Row>
 									<Col>
-									Total
+										Total
 									</Col>
 									<Col>
-										${cart.totalPrice}
+										<strong>${ cart.totalPrice }</strong>
 									</Col>
 								</Row>
-							</ListGroup.Item>
-							<ListGroup.Item>
-								{error && <Message variant="danger">{error}</Message>}
 							</ListGroup.Item>
 
+
 							<ListGroup.Item>
-										<Button type='button' className='btn-block' disbaled={cart.cartItems === 0 } onClick={placeorderhandler}>Placeorder</Button>
+								{ error && <Message variant="danger">{ error }</Message> }
+								<Button type='button' className='btn-block' disbaled={ cart.cartItems === 0 } onClick={ placeorderhandler }>Placeorder</Button>
 							</ListGroup.Item>
 						</ListGroup>
 					</Card>

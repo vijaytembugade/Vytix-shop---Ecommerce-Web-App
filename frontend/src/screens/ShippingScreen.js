@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Form, ButtonProps, Button, Row, Col } from "react-bootstrap";
+import { Form, ButtonProps, Button, Row, Col, Image } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import FormContainer from "../components/FormContainer";
 import { saveShippingAddress } from "../actions/cartActions";
@@ -23,69 +23,72 @@ const ShippingScreen = ({ history }) => {
     <>
       <CheckoutSteps step1 step2 />
       <Row>
-        <Col md={7}>
+        <Col md={ 6 }>
           <FormContainer>
             <h1>Shipping </h1>
-            <Form onSubmit={submitHandler}>
+            <Form onSubmit={ submitHandler }>
               <Form.Group>
                 <Form.Label>
                   Address
-                  <Form.Control
-                    type="text"
-                    placeholder="Enter Address"
-                    value={address}
-                    required
-                    onChange={(e) => setAddress(e.target.value)}
-                  ></Form.Control>
                 </Form.Label>
+                <Form.Control
+                  type="text"
+                  as="textarea"
+                  placeholder="Enter Address"
+                  value={ address }
+                  required
+                  onChange={ (e) => setAddress(e.target.value) }
+                ></Form.Control>
               </Form.Group>
 
               <Form.Group>
                 <Form.Label>
                   City
-                  <Form.Control
-                    type="text"
-                    placeholder="Enter City"
-                    value={city}
-                    required
-                    onChange={(e) => setCity(e.target.value)}
-                  ></Form.Control>
                 </Form.Label>
+                <Form.Control
+                  type="text"
+                  placeholder="Enter City"
+                  value={ city }
+                  required
+                  onChange={ (e) => setCity(e.target.value) }
+                ></Form.Control>
               </Form.Group>
 
               <Form.Group>
                 <Form.Label>
                   PostalCode
-                  <Form.Control
-                    type="text"
-                    placeholder="Enter PostalCode"
-                    value={postalCode}
-                    required
-                    onChange={(e) => setPostalCode(e.target.value)}
-                  ></Form.Control>
                 </Form.Label>
+                <Form.Control
+                  type="text"
+                  placeholder="Enter PostalCode"
+                  value={ postalCode }
+                  required
+                  onChange={ (e) => setPostalCode(e.target.value) }
+                ></Form.Control>
               </Form.Group>
 
               <Form.Group>
                 <Form.Label>
                   Country
-                  <Form.Control
-                    type="text"
-                    placeholder="Enter Country"
-                    value={country}
-                    required
-                    onChange={(e) => setCountry(e.target.value)}
-                  ></Form.Control>
                 </Form.Label>
+                <Form.Control
+                  type="text"
+                  placeholder="Enter Country"
+                  value={ country }
+                  required
+                  onChange={ (e) => setCountry(e.target.value) }
+                ></Form.Control>
               </Form.Group>
 
-              <Button type="submit" variant="primary">
+              <Button className="mt-3" type="submit" variant="primary">
                 Continue
               </Button>
             </Form>
           </FormContainer>
         </Col>
-        <Col md={5}>Demo Image</Col>
+        <Col>
+          <Image className='mt-3 img-fluid' alt="shipping iamge" src="/images/shippingImage.png" />
+        </Col>
       </Row>
     </>
   );

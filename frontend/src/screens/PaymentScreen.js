@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Form, Button, Row, Col } from "react-bootstrap";
+import { Form, Button, Row, Col, Image } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import FormContainer from "../components/FormContainer";
 import { saveShippingAddress } from "../actions/cartActions";
@@ -31,7 +31,7 @@ const PaymentScreen = ({ history }) => {
             <h1>Payment Method</h1>
             <Form onSubmit={submitHandler}>
               <Form.Group>
-                <Form.Label as="legend">Select Method</Form.Label>
+                <Form.Label as="legend">Select Payment Method</Form.Label>
 
                 <Col>
                   <Form.Check
@@ -40,6 +40,7 @@ const PaymentScreen = ({ history }) => {
                     id="PayPal"
                     name="paymentMethod"
                     value="PayPal"
+                    required
                     Checked={true}
                     onChange={(e) => setPaymentMethod(e.target.value)}
                   ></Form.Check>
@@ -49,18 +50,21 @@ const PaymentScreen = ({ history }) => {
                     id="Strip"
                     name="paymentMethod"
                     value="Stripe"
+                    disabled
                     onChange={(e) => setPaymentMethod(e.target.value)}
                   ></Form.Check>
                 </Col>
               </Form.Group>
 
-              <Button type="submit" variant="primary">
+              <Button className="mt-3" type="submit" variant="primary">
                 Continue
               </Button>
             </Form>
           </FormContainer>
         </Col>
-        <Col md={5}>Demo Image</Col>
+        <Col>
+          <Image className='mt-3 img-fluid' alt="payment iamge" src="/images/paymentImage.svg"/>
+        </Col>
       </Row>
     </>
   );

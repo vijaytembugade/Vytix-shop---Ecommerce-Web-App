@@ -7,28 +7,36 @@ import Message from "../components/Message";
 import Loader from "../components/Loader";
 import { getUserList, deleteUser } from '../actions/userAction'
 
-const UserListScreen = ({history}) => {
+const UserListScreen = ({ history }) => {
     const dispatch = useDispatch()
     const { loading, error, users } = useSelector(state => state.userList)
     const { userInfo } = useSelector(state => state.userLogin)
-    const { success:successDelete } = useSelector(state => state.userDelete)
+    const { success: successDelete } = useSelector(state => state.userDelete)
 
-    const deleteHandler=(id)=>{
-        if(window.confirm("Are you sure?")){
-            dispatch(deleteUser(id))
-        }
+    const [showDeleteUserMessage , setDeleteUserMessage] = useState(false);
+
+    const deleteHandler = (id) => {
+        // if (window.confirm("Are you sure?")) {
+        //     dispatch(deleteUser(id))
+        // }
+        setDeleteUserMessage(true)
+        setTimeout(() => {
+            setDeleteUserMessage(false)
+        }, 3000);
+        
     }
 
     useEffect(() => {
-        if(userInfo && userInfo.isAdmin){
+        if (userInfo && userInfo.isAdmin) {
             dispatch(getUserList())
-        }else{
+        } else {
             history.push('/login')
         }
     }, [dispatch, history, successDelete])
 
     return (
         <>
+        {showDeleteUserMessage && <Message variant="secondary">You do not access to delete User!</Message>}
             <h1>All Users</h1>
             { loading ? <Loader /> : error ? <Message variant="danger">{ error }</Message> :
                 (
@@ -44,7 +52,7 @@ const UserListScreen = ({history}) => {
                                 </tr>
                             </thead>
                             <tbody>
-                                {users.map(user => (
+                                { users.map(user => (
                                     <tr key={ user._id }>
                                         <td>{ user._id.toUpperCase() }</td>
                                         <td>{ user.name }</td>
@@ -55,13 +63,13 @@ const UserListScreen = ({history}) => {
                                             }
                                         </td>
                                         <td>
-                                            <LinkContainer to={`/admin/user/${user._id}/edit`}>
+                                            <LinkContainer to={ `/admin/user/${user._id}/edit` }>
                                                 <Button variant="light" className="btn-sm">
                                                     <i className="fas fa-edit"></i>
                                                 </Button>
                                             </LinkContainer>
-                                            <Button variant="danger" className="btn-sm" onClick={()=>deleteHandler(user._id)}>
-                                                    <i className="fas fa-trash"></i>
+                                            <Button variant="danger" className="btn-sm" onClick={ () => deleteHandler(user._id) }>
+                                                <i className="fas fa-trash"></i>
                                             </Button>
                                         </td>
 

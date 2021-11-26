@@ -17,7 +17,7 @@ import {
   userDetailsReducer,
   userUpdateProfileReducer,
   userListReducer,
-  userDeleteReducer,userUpdateReducer
+  userDeleteReducer,userUpdateReducer,
 } from "./reducers/userReducer";
 import { orderCreateReducer, orderDatailsReducer, orderPayReducer, orderListMyReducer, orderListReducer, orderDeliverReducer } from './reducers/orderReducers'
 

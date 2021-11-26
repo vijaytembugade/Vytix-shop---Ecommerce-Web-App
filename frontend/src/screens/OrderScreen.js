@@ -97,7 +97,7 @@ const OrderScreen = ({ history, match }) => {
 
 
     return loading ? <Loader /> : error ? (<Message variant="danger">{ error }</Message>) : (<>
-        <h1>Order { order._id.toUpperCase() }</h1>
+        <h1 className="orderScreen_orderId">Order { order._id.toUpperCase() }</h1>
         <Row>
             <Col md={ 8 }>
                 <ListGroup variant="flush">
@@ -114,7 +114,7 @@ const OrderScreen = ({ history, match }) => {
                             { order.shippingAddress.address }, { order.shippingAddress.city }, { order.shippingAddress.postalCode }, { order.shippingAddress.country }
                         </p>
                         <p>
-                            { order.isDelivered ? <Message variant="success">Delivered At { order.DeliveredAt }</Message> : <Message variant="danger">Not Delivered</Message> }
+                            { order.isDelivered ? <Message variant="success">Delivered At <strong>{ order.deliveredAt.substring(0,10) }</strong></Message> : <Message variant="danger">Not Delivered</Message> }
                         </p>
                     </ListGroup.Item>
                     <ListGroup.Item>
@@ -122,7 +122,7 @@ const OrderScreen = ({ history, match }) => {
                         <strong>Method: </strong>
                         { order.paymentMethod }
                         <p>
-                            { order.isPaid ? <Message variant="success">Paid At { order.paidAt }</Message> : <Message variant="danger">Not Paid</Message> }
+                            { order.isPaid ? <Message variant="success">Paid At <strong>{ order.paidAt.substring(0,10) }</strong></Message> : <Message variant="danger">Not Paid</Message> }
                         </p>
                     </ListGroup.Item>
 
@@ -195,7 +195,7 @@ const OrderScreen = ({ history, match }) => {
                                     Total
                                 </Col>
                                 <Col>
-                                    ${ order.totalPrice }
+                                    <strong>${ order.totalPrice }</strong>
                                 </Col>
                             </Row>
                         </ListGroup.Item>

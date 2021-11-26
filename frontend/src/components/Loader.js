@@ -13,14 +13,9 @@ const Loader = () => {
     // </Spinner>
     <div>
       <img
+        className="MainLoader"
         src="https://www.fusionfirst.com/ecommerce/200.gif"
         alt="loader"
-        style={{
-          width: "500px",
-          height: "500px",
-          margin: "auto",
-          display: "block",
-        }}
       />
     </div>
   );
