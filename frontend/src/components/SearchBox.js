@@ -17,12 +17,15 @@ const SearchBox = ({history}) => {
     const myStyles = {
         display : "flex",
         flexDirection : "row",
+        columnGap: "5px",
+        margin : "3px"
     }
     return (
         <Form style={myStyles} onSubmit={ submitHandler } inline >
             <Form.Control style={{display: "inline"}} type='text' name='q' onChange={ e => setKeyWord(e.target.value) } placeholder='Search Product' className='mr-3 ml-3'>
             </Form.Control>
-            <Button className="mr-3 ml-3" style={{display :"inline"}} type="submit" variant='primary' className='p-2'>Search</Button>
+            <br/>
+            <Button  className="ml-3" style={{display :"inline"}} type="submit" variant='primary'>Search</Button>
         </Form>
     )
 }
