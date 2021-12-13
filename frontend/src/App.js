@@ -34,7 +34,7 @@ function App() {
           <Route path="/cart/:id?" component={CartScreen} />
           <Route path="/shipping" exact component={ShippingScreen} />
           <Route path="/order/:id" component={OrderScreen} />
-          <Route path="/admin/userList" component={UserListScreen} /> 
+          <Route path="/admin/userList" component={UserListScreen} exact/> 
           <Route path="/admin/user/:id/edit" component={UserEditScreen} /> 
           <Route path="/admin/productlist" component={ProductListScreen} exact/> 
           <Route path="/admin/productlist/:pageNumber" component={ProductListScreen} exact/> 

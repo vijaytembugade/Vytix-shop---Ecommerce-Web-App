@@ -116,8 +116,9 @@ export const deleteUser = asyncHandler(async (req, res) => {
 //GET user by id  api/users/:id  Private/admin
 export const getUserById = asyncHandler(async (req, res) => {
   const user = await User.findById(req.params.id).select('-password')
-  if(user)
-  res.json(user);
+  if(user){
+    res.json(user);
+  }
   else{
     res.status(404)
     throw new Error('User Not Found')

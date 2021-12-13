@@ -26,7 +26,7 @@ const UserEditScreen = ({ match, history }) => {
             dispatch({ type: USER_UPDATE_RESET })
             history.push('/admin/userList')
         } else {
-            if (!user.name || user._id !== userId) {
+            if ( !user.name || user._id !== userId) {
                 dispatch(getUserDetails(userId))
             } else {
                 setName(user.name)
@@ -35,12 +35,12 @@ const UserEditScreen = ({ match, history }) => {
             }
         }
 
-    }, [dispatch, userId, user, sucessUpdate]);
+    }, [dispatch, history, userId, user, sucessUpdate]);
 
     const submitHandler = (e) => {
         e.preventDefault();
         //dispatch register
-        dispatch(UpdateUser({ _id : userId, name, email, isAdmin }))
+        dispatch(UpdateUser({ _id: userId, name, email, isAdmin }))
 
     };
 
@@ -51,8 +51,8 @@ const UserEditScreen = ({ match, history }) => {
             </Link>
             <FormContainer>
                 <h1>Edit User</h1>
-                {loadingUpdate && <Loader/>}
-                {errorUpdate && <Message variant={"danger"}>{error}</Message>}
+                { loadingUpdate && <Loader /> }
+                { errorUpdate && <Message variant={ "danger" }>{ error }</Message> }
                 { loading ? <Loader /> : error ? <Message variant="danger">{ error }</Message> : (
                     <Form onSubmit={ submitHandler }>
                         <Form.Group>
@@ -78,13 +78,13 @@ const UserEditScreen = ({ match, history }) => {
                             ></Form.Control>
                         </Form.Group>
 
-                        <Form.Group controlId="isadmin">
-                            <Form.Control
-                                type="checkbox"
-                                label="Is admin"
+                        <Form.Group controlId='isadmin'>
+                            <Form.Check
+                                type='checkbox'
+                                label='Is Admin'
                                 checked={ isAdmin }
                                 onChange={ (e) => setIsAdmin(e.target.checked) }
-                            ></Form.Control>
+                            ></Form.Check>
                         </Form.Group>
 
 

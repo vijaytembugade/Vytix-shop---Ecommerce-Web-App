@@ -25,7 +25,7 @@ import {
   USER_UPDATE_FAIL,
 } from "../constants/userConstants";
 
-import {ORDER_LIST_MY_RESET} from '../constants/orderConstants'
+import { ORDER_LIST_MY_RESET } from '../constants/orderConstants'
 import axios from "axios";
 
 export const login = (email, password) => async (dispatch) => {
@@ -122,10 +122,6 @@ export const getUserDetails = (id) => async (dispatch, getState) => {
       payload: data,
     });
 
-    // dispatch({
-    //   type: USER_LOGIN_SUCCESS,
-    //   payload: data,
-    // });
   } catch (error) {
     const message =
       error.response && error.response.data.message
@@ -183,8 +179,8 @@ export const logout = () => (dispatch) => {
   localStorage.removeItem("userInfo");
   dispatch({ type: USER_LOGOUT });
   dispatch({ type: USER_DETAILS_RESET });
-  dispatch({ type: ORDER_LIST_MY_RESET});
-  dispatch({type : USER_LIST_RESET});
+  dispatch({ type: ORDER_LIST_MY_RESET });
+  dispatch({ type: USER_LIST_RESET });
 };
 
 export const getUserList = (user) => async (dispatch, getState) => {
@@ -278,17 +274,13 @@ export const UpdateUser = (user) => async (dispatch, getState) => {
       },
     };
 
-    const {data} = await axios.put(`/api/users/${user._id}`,user, config);
+    const { data } = await axios.put(`/api/users/${user._id}`, user, config);
 
-    dispatch({
-      type: USER_UPDATE_SUCCESS,
-    });
-    dispatch({
-      type: USER_DETAILS_SUCCESS,
-      payload: data
-    });
+    dispatch({ type: USER_UPDATE_SUCCESS })
 
+    dispatch({ type: USER_DETAILS_SUCCESS, payload: data })
 
+    dispatch({ type: USER_DETAILS_RESET })
 
   } catch (error) {
     const message =
